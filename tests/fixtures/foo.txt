@@ -1,0 +1,4 @@
+This is the content of foo.txt file.
+It contains some sample text data.
+Line 3 of the foo.txt file.
+Important data that should be extracted.
