@@ -93,3 +93,9 @@
   (7) Appropriate Simplicity: Solve problems with fitting solutions, avoiding over-design to keep the system lean and understandable.
 - 【Very Important!!】 Whether you are writing code yourself or reading/reviewing others' code, strictly adhere to the above hard indicators and always prioritize elegant architecture design.
 - 【Very Important!!】 At any time, if you identify potential issues that could erode code quality (such as deviations from the positive qualities listed), immediately ask the user if optimization is needed and provide reasonable optimization suggestions.
+
+### testing 
+1. use pytest and pytest-cov to write unit tests.
+2. ensure at least 80% test coverage.
+3. use pytest fixtures and parameterization to enhance test efficiency.
+4. use pytest-mock for mocking dependencies in tests.
