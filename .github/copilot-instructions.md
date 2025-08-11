@@ -1,101 +1,151 @@
 # Python Development Guidelines
 
-## 1. Python Project Structure
-- Manage dependencies using `uv` CLI and `pyproject.toml`.
-- Configure `pyproject.toml` with:
-  - Entry points for `python -m`.
-  - Scripts, homepage, and development dependencies.
-  - Resources and data directories inclusion.
-- Follow standard PyPI project layout:
-  - Include `tests` and library name directories.
-  - Avoid nested `src` directory.
-- Write a `README.md` with:
-  - Project purpose and pain points solved.
-  - Installation instructions via `pip`.
-  - Usage examples (module, `python -m`, or script).
-  - Development guide.
-  - Links to homepage, email, `https://deepwiki.com/githubusername/projectname`, and GitHub issues.
+## 1. Core Architecture Principles
 
-## 2. Python Coding Practices
-- Adhere to PEP 8 naming conventions.
-- Use type hints consistently for code clarity.
-- Extract reusable operations into standalone modules.
-- Organize code using the Model-View-Presenter (MVP) pattern.
-- Leverage advanced Python features:
-  - `functools`, `collections`, and `itertools`.
-  - Functional programming: iterators, generators, `reduce`, `map`, `filter`, `sort` with key functions.
-  - Self-inspection, `random`, context managers, and first-class functions.
-- Use threading for network-bound or wait-heavy operations.
-- Employ multiprocessing for CPU- or I/O-intensive tasks.
-- Include clear comments to outline code structure and major sections.
-- Use meaningful, contextual variable names (up to five words).
-- Refactor code blocks exceeding 20 lines into separate functions.
-- Name functions with action-driven verbs (e.g., `chunk_data`, `preview_file`, `cache_result`).
+### Hard Quality Indicators
+- **File Size## 8. UI/UX Design Guidelines
 
-## 3. Preferred Python Libraries
-- Logging: `loguru`.
-- Data validation: `pydantic`.
-- Progress bars: `tqdm`.
-- Database operations: `sqlmodel`, `sqlite3`.
-- Large file I/O: `memoryview`, `mmap`.
-- Large datasets: `pandas` or `polars`.
-- Retry logic: `tenacity`.
-- HTTP requests: `httpx` (preferred over `requests`).
-- Prefer popular, well-starred GitHub libraries unless they lack capability or reliability.
+### Visual Design Principles
+- **Style**: Adopt minimalist or Material Design aesthetic
+- **Color Scheme**: Use accessible color palettes (4.5:1 contrast ratio minimum)
+- **Typography**: Sans-serif fonts (e.g., Roboto) with consistent hierarchy
+- **Visual Elements**: Clean, professional layouts avoiding clutter
+
+### Layout Structure
+- **Information Hierarchy**: Prioritize primary actions and content
+- **Grid System**: Maintain consistent spacing and alignment
+- **Responsive Design**: Adapt layouts for different screen sizes
+- **Navigation Flow**: Minimize steps between user goals
+
+### User Experience
+- **Accessibility**: Support screen readers and keyboard navigation
+- **Interaction Feedback**: Provide loading states and error messages
+- **Touch Support**: Ensure adequate button sizes (minimum 44px)
+- **Microcopy**: Use clear, action-oriented button labels file under 800 lines
+- **Directory Structure**: Limit files in each folder layer to no more than 12; organize into multi-layer subfolders if exceeding
+
+### Elegant Architecture Design
+Focus on these positive qualities to prevent code quality erosion:
+
+1. **Flexibility**: Design systems that are easy to change without extensive chain reactions
+2. **Uniqueness**: Ensure code logic appears in only one place (DRY principle)
+3. **Acyclic Dependencies**: Structure modules to avoid circular dependencies
+4. **Robustness**: Isolate changes to prevent unexpected breakage in unrelated areas
+5. **Clarity**: Write code with clear intent and organized structure
+6. **Cohesive Data Grouping**: Combine frequently used parameters into objects
+7. **Appropriate Simplicity**: Solve problems with fitting solutions, avoid over-engineering
+
+### Quality Assurance
+- **Critical**: Always adhere to hard indicators and prioritize elegant architecture
+- **Proactive**: Identify potential code quality issues and suggest optimizations immediately
+
+## 2. Package Management with UV
+
+Use `uv` CLI for all Python project management:
+- **Scripts**: `uv run <script>`
+- **Dependencies**: `uv add <package>` / `uv remove <package>`
+- **Virtual Environments**: `uv venv` / `uv sync`
+- **Building**: `uv build`
+- **Backend**: Use `hatchling` as build backend
+
+## 3. Python Coding Practices
+
+### Code Organization
+- **Architecture**: Follow Model-View-Presenter (MVP) pattern
+- **Naming**: Adhere to PEP 8 conventions
+- **Type Safety**: Use type hints consistently
+- **Modularity**: Extract reusable operations into standalone modules
+
+### Advanced Python Features
+- **Standard Library**: Leverage `functools`, `collections`, `itertools`
+- **Functional Programming**: Use iterators, generators, `reduce`, `map`, `filter`
+- **Performance**: Cache expensive functions with `@functools.lru_cache`
+- **Concurrency**: 
+  - `asyncio` for I/O-bound operations
+  - `threading` for network-bound or wait-heavy tasks
+  - `multiprocessing` for CPU-intensive tasks
+
+### Code Quality Standards
+- **Function Size**: Refactor blocks exceeding 20 lines into separate functions
+- **Naming**: Use action-driven verbs (e.g., `process_data`, `validate_input`)
+- **Variables**: Meaningful, contextual names (up to five words)
+- **Comments**: Outline code structure and major sections
+- **Exception Handling**: Let errors propagate naturally unless explicitly specified
+
+### MVP Architecture Implementation
+- **Model**: SQLModel for database models, Pydantic for validation, SQLite3 backend
+- **View**: FreeSimpleGUI for UI layouts with modular widgets
+- **Presenter**: Event mapping with async functions, non-blocking operations
+
 
 ## 4. Testing and Quality Assurance
-- Write unit tests using `pytest` with:
-  - Fixtures and parameterization.
-  - Debug logging with level enablement.
-- Ensure at least 80% test coverage with `coverage.py`.
-- Maintain code style with `ruff` or `black`.
-- Cache expensive functions with `functools.lru_cache`.
-- Implement asynchronous I/O with `asyncio`.
 
-## 5. Documentation and Collaboration
-- Generate API documentation using `Sphinx` or `MkDocs`.
-- Write docstrings in Google or NumPy style.
-- Maintain a changelog for versioned releases.
+### Test-Driven Development
+- **Framework**: Use `pytest` for all unit testing
+- **Coverage**: Maintain at least 60% test coverage with `coverage.py`
+- **Code Style**: Format with `ruff` or `black`
+- **Test Enhancement**: Use pytest fixtures and parameterization
+- **Mocking**: Use `pytest-mock` for dependency mocking
 
-## 6. Security Practices
-- Sanitize user inputs with `bleach` or similar libraries.
-- Manage secrets using `python-dotenv` or `keyring`.
-- Validate API inputs with `pydantic` schemas.
-- Securely hash passwords with `bcrypt` or `argon2`.
+## 5. Preferred Libraries and Technologies
 
-## 7. Web Development
-- Build full-stack applications with `Django`.
-- Implement WebSocket functionality with `aiohttp` or `channels`.
-- Use `Jinja2` or similar for templating.
+### Core Libraries
+- **Logging**: `loguru` for structured logging
+- **Data Validation**: `pydantic` for schema validation
+- **Progress Tracking**: `tqdm` for progress bars
+- **Retry Logic**: `tenacity` for robust error handling
+- **CLI Interface**: `typer` for command-line applications
 
-## 8. always use `uv` CLI
-- Use `uv` CLI for managing Python projects, including:
-  - Running scripts with `uv run`.
-  - Installing dependencies with `uv install`.
-  - Managing virtual environments with `uv venv`. 
+### Data and I/O
+- **Large Files**: `memoryview`, `mmap` for efficient I/O
+- **Datasets**: `pandas` or `polars` for data processing
+- **HTTP Requests**: `httpx` with async client support
+- **Configuration**: TOML for config file management
+- **Database**: SQLite3 with SQLModel for ORM
 
-## 9. always consider the unicode support
-- Ensure your code handles Unicode characters properly, especially for non-ASCII text.
-- Use libraries like `ftfy` or `unidecode` to clean and normalize text.
-- Test your application with a variety of languages and character sets.
+### User Interface
+- **GUI Framework**: FreeSimpleGUI for desktop applications
+- **Layout**: Modular widget design with event mapping
+- **Communication**: Global Queue for thread-safe messaging
+- **Async Operations**: Non-blocking UI with progress feedback
 
-## 10. other important guidelines
-- Always write code with the following hard indicators in mind:
-  (1) For dynamic languages like Python, JavaScript, TypeScript, ensure each code file stays under 500 lines as much as possible.
-  (3) Limit files in each folder layer to no more than 8. If exceeding, organize into multi-layer subfolders.
-- In addition to the hard indicators, always focus on elegant architecture design to promote the following positive qualities and prevent erosion of code quality:
-  (1) Flexibility: Design the system to be easy to change, where small modifications do not trigger extensive chain reactions.
-  (2) Uniqueness: Ensure code logic appears in only one place, making maintenance straightforward and consistent.
-  (3) Acyclic Dependencies: Structure modules to avoid mutual entanglements, enabling easy decoupling, testing, and reuse.
-  (4) Robustness: Make modifications in one area without unexpectedly breaking unrelated parts of the system.
-  (5) Clarity: Write code with clear intent and organized structure, allowing readers to easily understand its function and design.
-  (6) Cohesive Data Grouping: When multiple data items frequently appear together in method parameters, combine them into a single independent object.
-  (7) Appropriate Simplicity: Solve problems with fitting solutions, avoiding over-design to keep the system lean and understandable.
-- 【Very Important!!】 Whether you are writing code yourself or reading/reviewing others' code, strictly adhere to the above hard indicators and always prioritize elegant architecture design.
-- 【Very Important!!】 At any time, if you identify potential issues that could erode code quality (such as deviations from the positive qualities listed), immediately ask the user if optimization is needed and provide reasonable optimization suggestions.
 
-### testing 
-1. use pytest and pytest-cov to write unit tests.
-2. ensure at least 80% test coverage.
-3. use pytest fixtures and parameterization to enhance test efficiency.
-4. use pytest-mock for mocking dependencies in tests.
+## 6. Security and Internationalization
+
+### Security Practices
+- **Input Sanitization**: Use `bleach` for user input cleaning
+- **Secret Management**: Use `python-dotenv` or `keyring` for credentials
+- **API Validation**: Validate inputs with `pydantic` schemas
+- **Password Security**: Hash passwords with `bcrypt` or `argon2`
+
+### Unicode Support
+- **Character Handling**: Ensure proper Unicode support for non-ASCII text
+- **Text Normalization**: Use `ftfy` or `unidecode` for text cleaning
+- **Testing**: Validate with multiple languages and character sets
+
+## 7. Documentation and Collaboration
+
+### Documentation Standards
+- **API Documentation**: Generate with `Sphinx` or `MkDocs`
+- **Docstring Style**: Use Google or NumPy docstring format
+- **Version Control**: Maintain changelog for releases
+- **Code Comments**: Document architecture decisions and complex logic
+
+## UI/UX design
+1. **整体风格与颜值**：
+   - 选择一个主题风格：[STYLE_REFERENCE]（例如最小主义或Material Design）。
+   - 推荐颜色方案：使用[COLOR_PALETTE]（例如蓝色调以传达信任），确保对比度至少4.5:1以符合可访问性。
+   - 字体和图标：采用[FONT_FAMILY]（例如sans-serif字体如Roboto），图标风格为[ICON_STYLE]（例如线条图标），添加微妙阴影或渐变以提升视觉深度。
+   - 视觉吸引力：融入[VISUAL_ELEMENTS]（例如背景渐变或英雄图像），确保整体干净、专业，避免 clutter。
+
+2. **布局结构**：
+   - 绘制线框描述：顶部[HEADER_ELEMENTS]（例如导航栏），中间[MAIN_CONTENT]（例如卡片式列表），底部[FOOTER_ELEMENTS]（例如按钮栏）。
+   - 信息层次：优先显示[PRIMARY_INFO]（例如关键按钮），使用网格系统确保间距一致（至少[SPACING_PX] px）。
+   - 响应式设计：描述如何适应[DEVICE_TYPES]（例如手机、平板和桌面），如在小屏上折叠菜单。
+   - 导航流：确保用户从[START_POINT]到[END_POINT]只需[MIN_STEPS]步。
+
+3. **易用性与交互**：
+   - 用户流：创建persona如[USER_PERSONA]（例如忙碌上班族Emma），并设计交互以解决痛点[USER_PAIN_POINTS]（例如快速输入）。
+   - 交互元素：按钮大小至少[BUTTON_SIZE] px，支持触摸；添加反馈如[FEEDBACK_TYPE]（例如加载动画或错误提示）。
+   - 包容性：支持[ACCESSIBILITY_FEATURES]（例如屏幕阅读器兼容、键盘导航）。
+   - Microcopy：为按钮和标签提供简洁文字，如[EXAMPLE_MICROCOPY]（例如“立即开始”而非“提交”）。

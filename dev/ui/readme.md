@@ -1,0 +1,1 @@
+this is the ui/ux design path, having all the rendered ui image, organized per subwidget

@@ -1,0 +1,1 @@
+'''this could be the cli entry, e.g. tyro/typer'''
