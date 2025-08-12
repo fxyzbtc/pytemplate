@@ -5,6 +5,7 @@ every path might have readme.dev file which is the personalzie or custmoized req
 
 Core Design Principles:
 Your design always promoting the following positive qualities and preventing code quality erosion:
+- prefer the functional programming styling, less class if it is quite necessary. 
 - Flexibility: System easy to change, small modifications without chain reactions.
 - Uniqueness: Logic appears in only one place, for straightforward maintenance and consistency.
 - Acyclic Dependencies: Modules avoid entanglements, easy to decouple, test, and reuse.
@@ -18,8 +19,8 @@ Important Reminder: When writing or reviewing code, always follow the above prin
 Code Organization and Practices:
 - Pattern: Use Model-View-Presenter (MVC) pattern for decoupling:
   - Model: Handles data and validation, use SQLModel to define models (inherit SQLModel + Pydantic validation); SQLite3 backend (DB file [DB_FILE].db); 
-  - View (GUI or CLI): ui_module.py uses freesimplegui to define layout (sg.TabGroup, including main Tab + Debug Tab sg.Multiline for logs); Widget modular (e.g., def create_layout() returns list).
-  - Control: control.py uses mapping dict for events/functions (e.g., event_handlers = {'event_key': async_function}); defining all functions used by envents
+  - View (GUI or CLI): cli.py uses tpro for cli commands and subcommands; always add scripts and python -m app_name method to run the app; freesimplegui to define GUI layout and modularize widgets definition; 
+  - Control: control.py uses mapping dict for events/functions (e.g., event_handlers = {'event_key': function}); defining all functions used by envents
 - Source code organization
   - using python src layout, tests, docs
   - model to define core data structure
@@ -28,11 +29,11 @@ Code Organization and Practices:
 
 - Naming and Style: Follow PEP 8; consistent type hints; Google-style docstrings.
 - Advanced Features: Extract reusable operations to independent modules; use functools/collections/itertools, functional programming (map/filter/reduce/sort with key), generators, context managers, self-inspection, random, first-class functions.
-- Performance Optimization: Network/wait tasks use threading; CPU/IO-intensive use multiprocessing; all tasks asynchronous (asyncio + NonGIL if possible), non-blocking GUI (e.g., window.perform_long_operation); cache expensive functions with functools.lru_cache.
+- Performance Optimization: Network/wait tasks use threading; CPU/IO-intensive use multiprocessing; all tasks with multiprocess + NonGIL if possible, avoid asyncio, using threading if i/o tense tasks, non-blocking GUI (e.g., window.perform_long_operation); cache expensive functions with functools.lru_cache.
 - Exception Handling: only capture the error caused by user input, none of others shall be kept silently; print exception in debug messages
 - Unicode Support: Handle non-ASCII text throughout, use ftfy/unidecode to clean; test multiple languages.
 - Logging/Communication: Loguru (logger) outputs to console + GUI Debug Tab (Queue.put(log_message)); global Queue (queue.Queue) for thread/process communication and progress feedback.
-- Async/Progress: All tasks async (asyncio.loop, asyncio.create_task); HTTP uses httpx.AsyncClient; Feedback: start/finish via Queue.put("Starting..."/"Finished."), for clear sequences put("Step X/Y: ..."); GUI loop gets from Queue to update status/Debug Tab.
+- Async/Progress: All tasks with multiprocess; HTTP uses httpx.AsyncClient; Feedback: start/finish via Queue.put("Starting..."/"Finished."), for clear sequences put("Step X/Y: ..."); GUI loop gets from Queue to update status/Debug Tab.
 - Variable/Function Naming: Variables meaningful (up to 5 words); functions with action verbs (e.g., chunk_data); refactor code blocks over 20 lines to functions; add clear comments outlining structure.
 
 Preferred Libraries and Stack:
