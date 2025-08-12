@@ -18,7 +18,7 @@ Important Reminder: When writing or reviewing code, always follow the above prin
 Code Organization and Practices:
 - Pattern: Use Model-View-Presenter (MVC) pattern for decoupling:
   - Model: Handles data and validation, use SQLModel to define models (inherit SQLModel + Pydantic validation); SQLite3 backend (DB file [DB_FILE].db); 
-  - View (GUI or CLI): ui_module.py uses freesimplegui to define layout (sg.TabGroup, including main Tab + Debug Tab sg.Multiline for logs); Widget modular (e.g., def create_layout() returns list).
+  - View (GUI or CLI): cli.py uses tpro for cli commands and subcommands; always add scripts and python -m app_name method to run the app; freesimplegui to define GUI layout and modularize widgets definition; 
   - Control: control.py uses mapping dict for events/functions (e.g., event_handlers = {'event_key': async_function}); defining all functions used by envents
 - Source code organization
   - using python src layout, tests, docs
