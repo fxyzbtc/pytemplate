@@ -77,7 +77,7 @@ Incorporate top-tier UI principles for aesthetics, layout, and usability.
    - Information Hierarchy: Prioritize [PRIMARY_INFO] (e.g., key buttons); grid system, spacing at least [SPACING_PX] px.
    - Responsive: Adapt to [DEVICE_TYPES] (e.g., fold menus on small screens).
    - Navigation Flow: From [START_POINT] to [END_POINT] in [MIN_STEPS] steps.
-
+   - widgets alway expand the x or y to the free white space
 - Usability and Interaction:
    - User Flow: Persona [USER_PERSONA] (e.g., busy worker Emma), solve [USER_PAIN_POINTS] (e.g., quick input).
    - Interaction Elements: Button size at least [BUTTON_SIZE] px, support touch; feedback [FEEDBACK_TYPE] (e.g., loading animation/error prompts).
